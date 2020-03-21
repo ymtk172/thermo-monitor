@@ -1,8 +1,8 @@
 package com.yamalc.ytmp.thermomonitor.grpc;
 
-import com.yamalc.ytmp.userapi.grpc.AuthenticateRequest;
-import com.yamalc.ytmp.userapi.grpc.AuthenticateResponse;
-import com.yamalc.ytmp.userapi.grpc.UserGrpc;
+import com.yamalc.ytmp.grpc.user.AuthenticateRequest;
+import com.yamalc.ytmp.grpc.user.AuthenticateResponse;
+import com.yamalc.ytmp.grpc.user.UserGrpc;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.Status;
@@ -31,7 +31,7 @@ public class UserApiClient {
     }
 
     public void authenticate(String id, String password) {
-        AuthenticateRequest authenticateRequest =
+        AuthenticateRequest request =
                 AuthenticateRequest
                         .newBuilder()
                         .setId(id)
@@ -39,9 +39,9 @@ public class UserApiClient {
                         .build();
 
         try {
-            AuthenticateResponse tweetResponse = blockingStub.authenticate(authenticateRequest);
+            AuthenticateResponse response = blockingStub.authenticate(request);
 
-            logger.info(String.format("response: result = %b", tweetResponse.getAuthenticateResult()));
+            logger.info(String.format("response: result = %b", response.getAuthenticateResult()));
         } catch (StatusRuntimeException e) {
             Status status = Status.fromThrowable(e);
             logger.info("error: status code = " + status.getCode() + ", description = " + status.getDescription());
