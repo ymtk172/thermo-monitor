@@ -18,7 +18,7 @@ class ThermoMonitorController(private val thermoCompo: ThermoComponent) {
     fun top(model: Model): String {
         val userName = "user1"
         model["username"] = userName
-        model["rendering"] = thermoCompo.editText(userName)
+        thermoCompo.editText(userName)
         return "top"
     }
 }
