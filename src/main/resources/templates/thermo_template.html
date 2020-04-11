@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="thermo_temp" th:remove="tag">
 最後に計った体温：<span th:text="${@thermoComponent.latestThermo(username)}"></span>度
 　直近の最高体温：<span th:text="${@thermoComponent.LatestHealthCheck(username)}"></span>度
 　直近の平均体温：<span th:text="${@thermoComponent.RecentlyHealthCheck(username)}"></span>度
 　平熱<span th:text="${@thermoComponent.RecentlyThermo(username)}"></span>度
-
+</div>
 </html>

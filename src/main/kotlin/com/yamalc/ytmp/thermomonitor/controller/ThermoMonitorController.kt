@@ -9,16 +9,10 @@ import org.springframework.web.bind.annotation.RequestMapping
 @Controller
 @RequestMapping("/")
 class ThermoMonitorController(private val thermoCompo: ThermoComponent) {
-
-    @RequestMapping("/")
-    fun login(): String {
-        return "login"
-    }
     @RequestMapping("/top")
     fun top(model: Model): String {
         val userName = "user1"
         model["username"] = userName
-        thermoCompo.editText(userName)
         return "top"
     }
 }
