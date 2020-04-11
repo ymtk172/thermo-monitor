@@ -7,9 +7,9 @@ class LoginForm {
 
     @NotNull
     @Size(min = 1, max = 80)
-    var loginId: String? = null
+    var loginId: String = ""
 
     @NotNull
     @Size(min = 1, max = 20)
-    var loginPassword: String? = null
+    var loginPassword: String = ""
 }
