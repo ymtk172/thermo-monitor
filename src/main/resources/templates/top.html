@@ -5,9 +5,9 @@
 </head>
 <body>
 <div class="container">
-<div class="alert alert-primary"><h1>体温計</h1></div>
+  <div><a th:href="@{/logout}">ログアウトする</a></div>
   <div class="badge badge-secondary">ログインユーザ名：<span th:text="${username}"></span></div>
-<div class="alert alert-danger" th:insert="thermo_template :: thermo_temp"></div>
+  <div class="alert alert-danger" th:insert="~{thermo_template :: thermo_temp} ?: ~{}"></div>
 </div>
 </body>
 </html>
