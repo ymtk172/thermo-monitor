@@ -9,12 +9,18 @@ import org.springframework.ui.set
 import org.springframework.validation.BindingResult
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
 
 @Controller
 @RequestMapping("/")
 class LoginController(private val usersMapper: UsersMapper) {
+    @RequestMapping("/s/{filename}")
+    fun shortcut(@PathVariable("filename") filename: String): String {
+        println(filename)
+        return "shortcut/$filename"
+    }
     @RequestMapping("/")
     fun loginTop(loginForm: LoginForm): String {
         return "loginTop"
