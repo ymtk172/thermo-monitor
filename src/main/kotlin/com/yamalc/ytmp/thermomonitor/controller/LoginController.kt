@@ -1,8 +1,8 @@
 package com.yamalc.ytmp.thermomonitor.controller
 
-import com.yamalc.ytmp.thermomonitor.domain.Users
+import com.yamalc.ytmp.grpc.client.UserApiClient
+import com.yamalc.ytmp.grpc.user.AuthenticateResponseType
 import com.yamalc.ytmp.thermomonitor.form.LoginForm
-import com.yamalc.ytmp.thermomonitor.mapper.UsersMapper
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.ui.set
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 
 @Controller
 @RequestMapping("/")
-class LoginController(private val usersMapper: UsersMapper) {
+class LoginController() {
     @RequestMapping("/s/{filename}")
     fun shortcut(@PathVariable("filename") filename: String): String {
         println(filename)
@@ -25,17 +25,13 @@ class LoginController(private val usersMapper: UsersMapper) {
     fun loginTop(loginForm: LoginForm): String {
         return "loginTop"
     }
+    val userClient: UserApiClient = UserApiClient.create("localhost", 9081)
+
     @PostMapping("/login")
     fun login(model: Model, @Validated form: LoginForm, result: BindingResult): String {
         if (result.hasErrors()) return "loginTop"
         println("login logic")
-        //TODO: check ID/PW
-        val user: Users = usersMapper.select(form.loginId)
-        if (user == null) {
-            model["errorMessage"] = "存在しないユーザIDです"
-            return "loginTop"
-        }
-        if (form.loginPassword != user.password) {
+        if (userClient.authenticate(form.loginId,form.loginPassword) != AuthenticateResponseType.OK) {
             model["errorMessage"] = "パスワードが間違っています。"
             return "loginTop"
         }
