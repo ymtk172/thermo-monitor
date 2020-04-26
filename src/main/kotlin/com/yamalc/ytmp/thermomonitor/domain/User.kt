@@ -2,8 +2,7 @@ package com.yamalc.ytmp.thermomonitor.domain
 
 import java.util.*
 
-
-class User {
+class User : java.io.Serializable {
     var user_id: String = ""
     var password: String = ""
     var insert_date: Date = Date()
