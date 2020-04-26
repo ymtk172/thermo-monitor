@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:sec="http://www.springframework.org/schema/security"
+       xsi:schemaLocation="
+           http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans.xsd
+           http://www.springframework.org/schema/security
+           http://www.springframework.org/schema/security/spring-security.xsd">
+
+    <sec:http pattern="/resources/**" security="none"/>
+
+    <bean id="loginUrlAuthenticationEntryPoint" class="org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint">
+        <constructor-arg value="/" />　　※ログイン画面の指定。認証なしでアクセスするとここに飛ばされる。
+    </bean>
+    <!-- SpringSecurity5のメイン設定　-->
+    <sec:http auto-config="true" use-expressions="false" >
+        <!-- 認可処理（閲覧権限）でエラーになったときに表示するエラー画面 -->
+        <sec:access-denied-handler error-page="/error/403.html"/>
+
+        <!-- 認証なしで表示する画面の設定(これらを設定しないとどこにもアクセスできないWEBになります) -->
+        <sec:intercept-url pattern="/error/**" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+        <sec:intercept-url pattern="/loginTop.html" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+<!--        <sec:intercept-url pattern="/include/**" access="IS_AUTHENTICATED_ANONYMOUSLY"/>-->
+        <!-- 認証後（ログイン後）に表示する画面のロール設定 -->
+        <sec:intercept-url pattern="/top.html" access="ROLE_ADMIN,ROLE_USER"/>
+        <sec:intercept-url pattern="/user/**" access="ROLE_ADMIN,ROLE_USER"/>
+        <sec:intercept-url pattern="/**" access="ROLE_ADMIN"/>
+
+        <!-- ログイン設定 -->
+        <sec:form-login login-processing-url="/j_spring_security_check"
+                        login-page="/loginTop.html" default-target-url="/top.html"
+                        always-use-default-target="false"
+                        authentication-failure-url="/login.html?error=true" />
+
+        <!-- ログアウト設定 -->
+        <sec:logout logout-url="/logout" invalidate-session="true"/>
+        <sec:anonymous granted-authority="ROLE_ANONYMOUS"/>
+
+        <!-- CSRF対策用のトークンを発行することを宣言します（SprinSecurity3.2以降の機能です） -->
+        <sec:csrf request-matcher-ref="csrfTarget"/>
+
+        <!-- HTTPヘッダで可能なセキュリティ対策
+         　ここで設定できる内容は基本的にはApacheの設定ファイルの記述でも解決可能なことです。
+      　　アプリ側で対策するか、Apache側で対策するかは決めの問題です。
+          -->
+        <sec:headers>
+            <!-- クリックジャッキング対策 -->
+            <sec:frame-options policy="DENY"/>
+            <!-- XSS攻撃対策 -->
+            <sec:xss-protection />
+        </sec:headers>
+    </sec:http>
+
+</beans>

@@ -33,3 +33,6 @@ build/
 # maven
 .mvn/
 mvn*
+
+# other
+old/

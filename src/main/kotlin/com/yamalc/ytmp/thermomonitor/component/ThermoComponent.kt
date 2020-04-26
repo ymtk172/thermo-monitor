@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component
 
 @Component
 class ThermoComponent {
-    val thermoClient = ThermoApiClient.create("localhost", 8082)
+    val thermoClient: ThermoApiClient = ThermoApiClient.create("localhost", 8082)
 
     fun latestThermo(userName: String): Double {
         return thermoClient.getLatestThermoInfo(userName)

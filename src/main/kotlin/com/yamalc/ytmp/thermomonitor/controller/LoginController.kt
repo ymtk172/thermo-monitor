@@ -1,7 +1,5 @@
 package com.yamalc.ytmp.thermomonitor.controller
 
-import com.yamalc.ytmp.grpc.client.UserApiClient
-import com.yamalc.ytmp.grpc.user.AuthenticateResponseType
 import com.yamalc.ytmp.thermomonitor.form.LoginForm
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
@@ -21,25 +19,16 @@ class LoginController() {
         println(filename)
         return "shortcut/$filename"
     }
-    @RequestMapping("/")
-    fun loginTop(loginForm: LoginForm): String {
+    @GetMapping("/")
+    fun displayLoginTop(loginForm: LoginForm): String {
         return "loginTop"
     }
-    val userClient: UserApiClient = UserApiClient.create("localhost", 9081)
 
-    @PostMapping("/login")
-    fun login(model: Model, @Validated form: LoginForm, result: BindingResult): String {
-        if (result.hasErrors()) return "loginTop"
-        println("login logic")
-        if (userClient.authenticate(form.loginId,form.loginPassword) != AuthenticateResponseType.OK) {
-            model["errorMessage"] = "パスワードが間違っています。"
-            return "loginTop"
-        }
-        return "redirect:/top"
-    }
-    @GetMapping("/logout")
-    fun logout(): String {
-        //TODO: delete session
-        return "redirect:/"
+    //Spring Securityの認証処理はサーブレットフィルターで行われ、Bean ValidationはDispatcherServletで行われるため
+    //単項目（Bean Validation）エラー時にも、先にSpring Securityの認証処理によるDBアクセスが発生する。
+    @PostMapping("/loginFailure")
+    fun loginFailure(model: Model,@Validated form: LoginForm, result: BindingResult): String {
+        model["errorMessage"] = "正しいログインID・パスワードを入力してください。"
+        return "loginTop"
     }
 }
