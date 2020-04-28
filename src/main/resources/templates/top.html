@@ -1,12 +1,21 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{layout/template :: layout(~{::title},~{::body/content()})}">
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity"
+      th:replace="~{layout/template :: layout(~{::title},~{::body/content()})}">
 <head>
   <title>Thermo Monitor TOP</title>
 </head>
 <body>
 <div class="container">
   <div><a th:href="@{/logout}">ログアウトする</a></div>
-  <div class="badge badge-secondary">ログインユーザ名：<span th:text="${username}"></span></div>
+  <div class="badge badge-secondary">ログインユーザ名：<span sec:authentication="principal.username"></span></div>
+  <div id="navbar" class="navbar navbar-inverse" sec:authorize="hasRole('ROLE_USER')">
+    <div class="badge badge-secondary">ロール名：ROLE_USER（検証用、ここは表示される）</div>
+  </div>
+  <div id="navbar2" class="navbar navbar-inverse" sec:authorize="hasRole('ROLE_XXXXXX')">
+    <div class="badge badge-secondary">これは表示されない</div>
+  </div>
   <div class="alert alert-danger" th:insert="~{thermo_template :: thermo_temp} ?: ~{}"></div>
 </div>
 </body>

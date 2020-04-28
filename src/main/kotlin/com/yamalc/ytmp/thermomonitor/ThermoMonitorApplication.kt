@@ -20,7 +20,7 @@ fun passwordEncoder(): PasswordEncoder? {
 class ThermoMonitorApplication
 
 fun main(args: Array<String>) {
-	val password = "pass"
+/*	val password = "pass"
 	val digest = passwordEncoder!!.encode(password)
 	println("ハッシュ値 = $digest")
 	val digest2 = passwordEncoder!!.encode(password)
@@ -30,7 +30,7 @@ fun main(args: Array<String>) {
 	}
 	if (passwordEncoder!!.matches(password, digest2)) {
 		println("一致")
-	}
+	}*/
 	runApplication<ThermoMonitorApplication>(*args)
 }
 
