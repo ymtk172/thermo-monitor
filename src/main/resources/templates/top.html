@@ -8,8 +8,6 @@
 </head>
 <body>
 <div class="container">
-  <div><a th:href="@{/logout}">ログアウトする</a></div>
-  <div class="badge badge-secondary">ログインユーザ名：<span sec:authentication="principal.username"></span></div>
   <div id="navbar" class="navbar navbar-inverse" sec:authorize="hasRole('ROLE_USER')">
     <div class="badge badge-secondary">ロール名：ROLE_USER（検証用、ROLE_USER権限でログインしたときのみ表示される）</div>
   </div>
