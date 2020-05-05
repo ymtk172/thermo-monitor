@@ -14,7 +14,6 @@ class LoginUser
 (private val user: User, private val authorities: List<Authority>) : org.springframework.security.core.userdetails.User(
         user.user_id,
         user.password,
-//        AuthorityUtils.createAuthorityList("ROLE_USER")
         getAuthorities(authorities)
 )
 

@@ -47,11 +47,6 @@ class LoginController() {
 
     @RequestMapping("/getUserInfo")
     fun top(@AuthenticationPrincipal loginUser: LoginUser, session: HttpSession): String {
-        if (userInfo == null) {
-            println("userInfo is null")
-        } else {
-            println("userInfo is: " + userInfo.userId + " " + userInfo.displayName)
-        }
         val userInfoResponse: UserInfoResponse = userClient.getUserInfo(loginUser.username)
         userInfo.userId = userInfoResponse.id
         userInfo.displayName = userInfoResponse.displayName

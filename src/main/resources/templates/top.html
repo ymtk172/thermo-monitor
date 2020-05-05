@@ -8,9 +8,6 @@
 </head>
 <body>
 <div class="container">
-  <div id="navbar" class="navbar navbar-inverse" sec:authorize="hasRole('ROLE_USER')">
-    <div class="badge badge-secondary">ロール名：ROLE_USER（検証用、ROLE_USER権限でログインしたときのみ表示される）</div>
-  </div>
   <div class="alert alert-danger" th:insert="~{thermo_template :: thermo_temp} ?: ~{}"></div>
 </div>
 </body>
