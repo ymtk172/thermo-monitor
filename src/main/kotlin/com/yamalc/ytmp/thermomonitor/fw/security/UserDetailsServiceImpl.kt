@@ -18,11 +18,12 @@ import org.springframework.stereotype.Component
 class UserDetailsServiceImpl(
         val usersMapper: UsersMapper,
         val authoritiesMapper: AuthoritiesMapper) : UserDetailsService {
+
     @Throws(UsernameNotFoundException::class)
     override fun loadUserByUsername(loginId: String): UserDetails {
         // loginIdが空の場合はDBアクセスを省略する
         if (loginId.isEmpty()) throw UsernameNotFoundException("missing login ID")
-        val user: User?
+        val user: User
         val authorities: List<Authority>
         try {
             user = usersMapper.select(loginId)
@@ -37,7 +38,7 @@ class UserDetailsServiceImpl(
         }
 
         try {
-            authorities = authoritiesMapper.selectByUserId(loginId)
+            authorities = authoritiesMapper.selectByUserId(user.user_id)
         } catch (e: Exception) {
             println(e.printStackTrace())
             throw UsernameNotFoundException("It can not be acquired User")

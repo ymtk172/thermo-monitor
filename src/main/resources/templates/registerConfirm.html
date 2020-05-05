@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{layout/template :: layout(~{::title},~{::body/content()})}">
+<head>
+  <title>Thermo Monitor 新規登録</title>
+</head>
+<body>
+<div class="container">
+  <form th:action="@{/register}" method="post" th:object="${userRegisterForm}">
+    <span class="text-danger" th:if="${errorMessage != null}" th:text="${errorMessage}"></span>
+    <div class="form-group row">
+      <label class="col-sm-3 col-form-label">ユーザID(ログインIDになります)</label>
+      <div class="col-sm-4">
+        <p th:text="*{userId}"></p>
+      </div>
+    </div>
+    <div class="form-group row">
+      <label class="col-sm-3 col-form-label">ユーザ名(この名前が表示されます)</label>
+      <div class="col-sm-4">
+        <p th:text="*{displayName}"></p>
+      </div>
+    </div>
+    <div class="form-group row">
+      <label class="col-sm-3 col-form-label">パスワード</label>
+      <div class="col-sm-4">
+        <p>※セキュリティ上の理由で表示されません※</p>
+      </div>
+    </div>
+    <div class="form-group row">
+      <div class="col-sm-3"></div>
+      <input type="submit" name="submit" class="btn btn-danger" value="登録する"></button>
+      <input type="submit" name="back" class="btn btn-info" value="入力し直す"></button>
+    </div>
+  </form>
+</div>
+</body>
+</html>

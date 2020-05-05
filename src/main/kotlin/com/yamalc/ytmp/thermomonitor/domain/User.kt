@@ -1,10 +1,11 @@
 package com.yamalc.ytmp.thermomonitor.domain
 
-import java.util.*
+import java.sql.Date
 
 class User : java.io.Serializable {
     var user_id: String = ""
     var password: String = ""
-    var insert_date: Date = Date()
-    var update_date: Date = Date()
+    lateinit var insert_date: Date
+    lateinit var update_date: Date
+
 }

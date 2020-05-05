@@ -9,10 +9,11 @@
     <div th:fragment="header" th:remove="tag">
       <div class="container">
         <div class="row">
-          <div class="col-sm-10"><h1>体温計</h1></div>
+          <div class="col-sm-10"><h1><a th:href="@{/top}" style="color: inherit; text-decoration: none;">体温計</a></h1></div>
           <div class="col-sm-2" sec:authorize="isAuthenticated()"><!--ログイン中のみ表示する-->
             <a th:href="@{/logout}">ログアウト</a>
-            <div class="badge badge-secondary">ログイン中：<span sec:authentication="principal.username"></span></div>
+            <div class="badge badge-secondary">ログイン中：<span th:text="${session.userInfo.displayName}"></span></div>
+            <div class="badge badge-secondary">ログインID：<span sec:authentication="principal.username"></span></div>
           </div>
         </div>
       </div>

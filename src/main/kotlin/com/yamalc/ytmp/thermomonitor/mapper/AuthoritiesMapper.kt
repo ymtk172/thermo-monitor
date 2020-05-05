@@ -1,6 +1,7 @@
 package com.yamalc.ytmp.thermomonitor.mapper
 
 import com.yamalc.ytmp.thermomonitor.domain.Authority
+import org.apache.ibatis.annotations.Insert
 import org.apache.ibatis.annotations.Mapper
 import org.apache.ibatis.annotations.Select
 
