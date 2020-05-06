@@ -1,6 +1,7 @@
 package com.yamalc.ytmp.thermomonitor.component
 
 import com.yamalc.ytmp.grpc.client.ThermoApiClient
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.stereotype.Component
 
 @Component
@@ -10,13 +11,13 @@ class ThermoComponent {
     fun latestThermo(userName: String): Double {
         return thermoClient.getLatestThermoInfo(userName)
     }
-    fun LatestHealthCheck(userName: String): Double {
+    fun latestHealthCheck(userName: String): Double {
         return thermoClient.getLatestHealthCheck(userName)
     }
-    fun RecentlyHealthCheck(userName: String): Double {
+    fun recentlyHealthCheck(userName: String): Double {
         return thermoClient.getRecentlyHealthCheck(userName)
     }
-    fun RecentlyThermo(userName: String): Double {
+    fun recentlyThermo(userName: String): Double {
         return thermoClient.getNormalBodyTemperature(userName)
     }
 }

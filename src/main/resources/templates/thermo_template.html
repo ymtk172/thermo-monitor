@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <div th:fragment="thermo_temp" th:remove="tag">
-最後に計った体温：<span th:text="${@thermoComponent.latestThermo(#authentication.name)}"></span>度
-　直近の最高体温：<span th:text="${@thermoComponent.LatestHealthCheck(#authentication.name)}"></span>度
-　直近の平均体温：<span th:text="${@thermoComponent.RecentlyHealthCheck(#authentication.name)}"></span>度
-　平熱<span th:text="${@thermoComponent.RecentlyThermo(#authentication.name)}"></span>度
+最後に計った体温：<span th:text="${#numbers.formatDecimal(@thermoComponent.latestThermo(#authentication.name), 1, 'COMMA', 2, 'POINT')}"></span>度
+　直近の最高体温：<span th:text="${#numbers.formatDecimal(@thermoComponent.latestHealthCheck(#authentication.name), 1, 'COMMA', 2, 'POINT')}"></span>度
+　直近の平均体温：<span th:text="${#numbers.formatDecimal(@thermoComponent.recentlyHealthCheck(#authentication.name), 1, 'COMMA', 2, 'POINT')}"></span>度
+　平熱<span th:text="${#numbers.formatDecimal(@thermoComponent.recentlyThermo(#authentication.name), 1, 'COMMA', 2, 'POINT')}"></span>度
 </div>
 </html>
