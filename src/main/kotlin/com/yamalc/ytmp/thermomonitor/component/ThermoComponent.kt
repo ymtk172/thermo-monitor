@@ -1,7 +1,6 @@
 package com.yamalc.ytmp.thermomonitor.component
 
 import com.yamalc.ytmp.grpc.client.ThermoApiClient
-import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.stereotype.Component
 
 @Component

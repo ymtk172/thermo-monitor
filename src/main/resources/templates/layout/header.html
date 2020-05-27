@@ -16,7 +16,7 @@
             </div>
           </div>
           <div class="col-sm-2" sec:authorize="isAuthenticated()"><!--ログイン中のみ表示する-->
-            <a th:href="@{/logout}">ログアウト</a>
+            <div><a th:href="@{/logout}">ログアウト</a></div>
             <div class="badge badge-secondary">ログイン中：<span th:text="${session.userInfo.displayName}"></span></div>
             <div class="badge badge-secondary">ログインID：<span sec:authentication="principal.username"></span></div>
           </div>
