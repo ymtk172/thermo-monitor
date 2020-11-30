@@ -1,8 +1,15 @@
 package com.yamalc.ytmp.thermomonitor.controller
 
 import com.yamalc.ytmp.grpc.client.UserApiClient
+import com.yamalc.ytmp.grpc.user.ErrorCode
+import com.yamalc.ytmp.grpc.user.ErrorDetail
+import com.yamalc.ytmp.grpc.user.UserInfo
+import com.yamalc.ytmp.grpc.user.UserInfoRequest
 import com.yamalc.ytmp.thermomonitor.form.UserRegisterForm
 import com.yamalc.ytmp.thermomonitor.service.UserRegisterServiceImpl
+import io.grpc.Status
+import io.grpc.StatusRuntimeException
+import io.grpc.protobuf.ProtoUtils
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Controller
@@ -15,7 +22,6 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.SessionAttributes
 import org.springframework.web.bind.support.SessionStatus
-import java.io.IOException
 
 @Controller
 @RequestMapping("/register")
@@ -54,10 +60,41 @@ class UserRegisterController(val userRegisterServiceImpl: UserRegisterServiceImp
         try {
             // TODO: 現状ユーザID変更機能は考慮していない
             userRegisterServiceImpl.registerUser(userRegisterForm.userId, passwordEncoder.encode(userRegisterForm.loginPassword))
-            userClient.registerUserInfoResponse(userRegisterForm.userId, userRegisterForm.displayName)
-        } catch (e: IOException) {
-            println("DB access error occurred")
-            throw e
+            // Domain化
+            val userInfo = UserInfo.newBuilder()
+                    .setId(userRegisterForm.userId)
+                    .setDisplayName(userRegisterForm.displayName)
+                    .build()
+            // APIの複数化
+            val userInfoRequest = UserInfoRequest.newBuilder()
+                    .addUserInfo(userInfo)
+                    .build()
+            userClient.registerUserInfoResponse(userInfoRequest)
+        } catch (e: StatusRuntimeException) {
+            val status = Status.fromThrowable(e)
+            if ( Status.INTERNAL.code == status.code ) {
+                val errorDetail = Status.trailersFromThrowable(e)
+                        .get(ProtoUtils.keyForProto(ErrorDetail.getDefaultInstance()))!! //errorDetailは必ず入っている
+                val errorCode = errorDetail.code
+                if ( ErrorCode.VALIDATION_ERROR == errorCode) {
+                    val errorInfoList = errorDetail.errorInfoList
+                    if(errorInfoList.isNotEmpty()) { //UserInfoが入っていれば詳細ログ出力
+                        errorInfoList.forEach {
+                            val errorLineNumber = it.errorLineNumber
+                            val errorFieldName = UserInfo.getDefaultInstance().descriptorForType.findFieldByNumber(it.errorField)
+                            val errorMessage = it.errorDescription
+                            println("API Validation Failed at \"$errorFieldName\" of $errorLineNumber th(from 0) bean with message \"$errorMessage\"")
+                        }
+                    } else {
+                        println("API Validation Failed with no ErrorInfo.")
+                    }
+                } else {
+                    println("Unexpected error occurred with ErrorCode = $errorCode at Status = $status")
+                }
+            } else {
+                println("Something occurred with Status = $status")
+            }
+            return "redirect:/register"
         }
         sessionStatus.setComplete()
         model["generalMessage"] = "ユーザを登録しました。登録した情報でログインしてください。"
