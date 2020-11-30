@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.yama-lc.ytmp</groupId>
 	<artifactId>thermo-monitor</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.1</version>
 	<name>thermo-monitor</name>
 	<description>ymtk172/thermo-monitor-project</description>
 
