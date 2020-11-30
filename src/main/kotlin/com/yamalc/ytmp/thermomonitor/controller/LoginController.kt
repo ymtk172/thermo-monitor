@@ -2,7 +2,7 @@ package com.yamalc.ytmp.thermomonitor.controller
 
 import com.yamalc.ytmp.grpc.client.UserApiClient
 import com.yamalc.ytmp.grpc.user.UserInfoResponse
-import com.yamalc.ytmp.thermomonitor.bean.UserInfo
+import com.yamalc.ytmp.thermomonitor.bean.UserInfoBean
 import com.yamalc.ytmp.thermomonitor.form.LoginForm
 import com.yamalc.ytmp.thermomonitor.fw.security.LoginUser
 import org.springframework.beans.factory.annotation.Autowired
@@ -23,7 +23,7 @@ import javax.servlet.http.HttpSession
 class LoginController() {
 
     @Autowired
-    lateinit var userInfo: UserInfo
+    lateinit var userInfoBean: UserInfoBean
 
     val userClient: UserApiClient = UserApiClient.create("localhost", 9081)
 
@@ -48,10 +48,10 @@ class LoginController() {
     @RequestMapping("/getUserInfo")
     fun top(@AuthenticationPrincipal loginUser: LoginUser, session: HttpSession): String {
         val userInfoResponse: UserInfoResponse = userClient.getUserInfo(loginUser.username)
-        userInfo.userId = userInfoResponse.id
-        userInfo.displayName = userInfoResponse.displayName
-        session.setAttribute("userInfo", userInfo)
-        println("logged in by: " + userInfo.displayName)
+        userInfoBean.userId = userInfoResponse.id
+        userInfoBean.displayName = userInfoResponse.displayName
+        session.setAttribute("userInfo", userInfoBean)
+        println("logged in by: " + userInfoBean.displayName)
         return "redirect:/top"
     }
 }

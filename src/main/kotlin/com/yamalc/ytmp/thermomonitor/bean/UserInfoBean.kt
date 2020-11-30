@@ -7,7 +7,7 @@ import org.springframework.web.context.WebApplicationContext
 
 @Component
 @Scope(value = WebApplicationContext.SCOPE_SESSION, proxyMode = ScopedProxyMode.TARGET_CLASS)
-class UserInfo : java.io.Serializable {
+class UserInfoBean : java.io.Serializable {
     companion object { private const val serialVersionUID = 1L }
     var userId: String = ""
     var displayName: String = ""
