@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="last_login" th:remove="tag">
+<div th:with="loginDateTimeList=${@lastLoginComponent.getLastLoginInfo(#authentication.name)}">
+<table>
+    <thead>
+        <tr><td>前回までにログインした日時</td></tr>
+    </thead>
+    <tbody>
+        <tr th:each="loginDateTime : ${loginDateTimeList}">
+            <td><span th:text="${loginDateTime}"></span></td>
+        </tr>
+    </tbody>
+</table>
+</div>
+</div>
+</html>
